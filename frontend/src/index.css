@@ -1,0 +1,281 @@
+/*
+ * Design: the GOV.UK Design System's public-service patterns (black header, blue rule,
+ * yellow focus, green action buttons, summary lists) mixed with a printed school
+ * admission form: ruled ledger rows, a guilloche-printed admission slip with a tear-off
+ * edge, and ink stamps for each application status. One deliberate light "paper" theme.
+ */
+:root {
+  --ink: #0b0c0c;
+  --ink-soft: #505a5f;
+  --rule: #b1b4b6;
+  --page: #ffffff;
+  --band: #f3f2f1;
+  --link: #1d70b8;
+  --focus: #ffdd00;
+  --go: #00703c;
+  --go-dark: #005a30;
+  --go-shadow: #002d18;
+  --error: #d4351c;
+  --held: #c2621a;
+  --held-wash: #fcd6c3;
+  --paper: #f4f8f3;
+  --paper-edge: #9fb8a4;
+  --stamp-confirmed: #00703c;
+  --stamp-held: #b4541a;
+  --stamp-expired: #505a5f;
+  --stamp-cancelled: #b62d16;
+
+  --font-ui: 'Public Sans', Arial, Helvetica, sans-serif;
+  --font-typed: 'Courier Prime', 'Courier New', Courier, monospace;
+
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font: 400 1.1875rem/1.32 var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { font-weight: 800; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 1.5rem + 2vw, 3rem); line-height: 1.04; letter-spacing: -0.015em; }
+h2 { font-size: 1.5rem; line-height: 1.15; }
+p { margin: 0; max-width: 40em; }
+
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+a:hover { color: #003078; text-decoration-thickness: 3px; }
+a:focus-visible, .btn:focus-visible, .back-link:focus-visible {
+  outline: 3px solid transparent;
+  background: var(--focus);
+  color: var(--ink);
+  box-shadow: 0 -2px var(--focus), 0 4px var(--ink);
+  text-decoration: none;
+}
+
+.container {
+  max-width: 1020px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+main.container { padding-block: 40px 80px; }
+.stack { display: grid; gap: 28px; align-content: start; }
+.narrow { max-width: 660px; }
+.lead { font-size: 1.3rem; line-height: 1.35; color: var(--ink-soft); text-wrap: pretty; }
+.muted { color: var(--ink-soft); }
+.small { font-size: 1rem; }
+.mono { font-family: var(--font-typed); font-size: 1rem; word-break: break-all; }
+.text-danger { color: var(--error); }
+.text-success { color: var(--go); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---- Header: GOV.UK black bar and blue rule ---- */
+.app-header { background: var(--ink); color: #fff; border-bottom: 10px solid var(--link); }
+.header-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 32px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 12px; color: #fff; text-decoration: none; }
+.brand:hover { color: #fff; }
+.brand:hover .brand-name { text-decoration: underline 3px; text-underline-offset: 0.2em; }
+.brand-crest { width: 40px; height: 46px; flex: none; }
+.brand-name { font-weight: 800; font-size: 1.5rem; letter-spacing: -0.01em; }
+nav { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+nav a { color: #fff; font-weight: 700; font-size: 1.05rem; text-decoration: none; padding-block: 6px; border-bottom: 4px solid transparent; }
+nav a:hover { color: #fff; text-decoration: underline 3px; text-underline-offset: 0.2em; }
+nav a.active { border-bottom-color: #fff; }
+nav a:focus-visible { outline: 3px solid transparent; background: var(--focus); color: var(--ink); box-shadow: 0 -2px var(--focus), 0 4px var(--ink); }
+
+/* ---- Applicant band: the student id field ---- */
+.applicant-band { background: var(--band); border-bottom: 1px solid var(--rule); }
+.student-box { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; padding-block: 14px; }
+.student-box input::placeholder { color: #8a9296; }
+.student-box label { font-weight: 700; font-size: 1.1875rem; }
+.student-box .hint { color: var(--ink-soft); font-size: 1.05rem; }
+.student-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.student-box input { width: 22ch; max-width: 100%; font-family: var(--font-typed); font-size: 1.3rem; font-weight: 700; letter-spacing: 0.08em; }
+.id-status { font-weight: 700; font-size: 1.05rem; }
+.id-status.ok { color: var(--go); }
+.id-status.bad { color: var(--error); }
+.form-group-error { border-left: 5px solid var(--error); padding-left: 15px; }
+
+/* ---- Form controls ---- */
+input {
+  font: inherit; width: 100%; height: 2.5rem; padding: 5px 8px; border: 2px solid var(--ink); border-radius: 0;
+  background: #fff; color: var(--ink);
+}
+input:focus { outline: 3px solid var(--focus); outline-offset: 0; box-shadow: inset 0 0 0 2px var(--ink); }
+input[aria-invalid='true'] { border-color: var(--error); }
+.form { display: grid; gap: 30px; }
+.form-group { display: grid; gap: 6px; }
+.form-group label { font-weight: 700; }
+.form-group .hint { color: var(--ink-soft); }
+.form .input-short { max-width: 8ch; }
+.field-error { color: var(--error); font-weight: 700; margin: 0; }
+
+/* ---- Buttons: GOV.UK solid buttons with a bottom shadow ---- */
+.btn {
+  font: 700 1.1875rem/1.2 var(--font-ui); display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 8px 14px 7px; border: 2px solid transparent; border-radius: 0; cursor: pointer; text-decoration: none;
+  background: var(--band); color: var(--ink); box-shadow: 0 2px 0 #929191; white-space: nowrap; position: relative;
+}
+.btn:hover { background: #dbdad9; color: var(--ink); text-decoration: none; }
+.btn:active { top: 2px; box-shadow: none; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn:disabled:active { top: 0; box-shadow: 0 2px 0 #929191; }
+.btn-primary { background: var(--go); color: #fff; box-shadow: 0 2px 0 var(--go-shadow); }
+.btn-primary:not(:disabled):hover { background: var(--go-dark); color: #fff; }
+.btn-primary:disabled:active { box-shadow: 0 2px 0 var(--go-shadow); }
+.btn-danger { background: var(--error); color: #fff; box-shadow: 0 2px 0 #55150b; }
+.btn-danger:not(:disabled):hover { background: #aa2a16; color: #fff; }
+.btn-danger:disabled:active { box-shadow: 0 2px 0 #55150b; }
+.btn-small { font-size: 1rem; padding: 5px 10px 4px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 20px; }
+
+.back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-size: 1rem; }
+.back-link::before { content: ''; width: 7px; height: 7px; border: solid currentColor; border-width: 0 0 2px 2px; transform: rotate(45deg); }
+
+/* ---- Messages ---- */
+.alert { padding: 15px 20px; border: 5px solid; margin: 0; }
+.alert-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+.alert-error { border-color: var(--error); font-weight: 700; }
+.alert-success { border-color: var(--go); }
+.alert-info { border-color: var(--link); }
+.alert-warning { border-color: var(--held); }
+
+/* GOV.UK "warning text": a bold sentence beside a black ! disc. */
+.warning-text { display: grid; grid-template-columns: 35px minmax(0, 1fr); gap: 15px; align-items: center; font-weight: 700; }
+.warning-text::before {
+  content: '!'; display: grid; place-items: center; width: 35px; height: 35px; border-radius: 50%;
+  background: var(--ink); color: #fff; font-weight: 800; font-size: 1.6rem; line-height: 1;
+}
+
+/* GOV.UK tag, used in lists. */
+.badge { font-family: var(--font-ui); display: inline-block; padding: 2px 8px 3px; font-weight: 700; font-size: 1rem; line-height: 1.25; white-space: nowrap; }
+.badge-held { background: var(--held-wash); color: #6e3619; }
+.badge-confirmed { background: #cce2d8; color: #005a30; }
+.badge-expired { background: #e5e6e7; color: #383f43; }
+.badge-cancelled { background: #f4cdc6; color: #942514; }
+
+/* ---- Notice board: the class list's opening band ---- */
+.notice { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 24px 40px; align-items: center; padding-bottom: 28px; border-bottom: 1px solid var(--rule); }
+.notice .stack { gap: 16px; }
+.notice-art { width: 100%; max-width: 360px; height: auto; justify-self: end; }
+
+/* ---- Seat ledger: a ruled register of classes ---- */
+.ledger-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 1rem; color: var(--ink-soft); }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.legend i { width: 18px; height: 12px; display: inline-block; border: 1px solid var(--ink); }
+
+.table-wrap { overflow-x: auto; }
+.class-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.class-table th, .class-table td { padding: 16px 20px 16px 0; text-align: left; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+.class-table thead th { font-weight: 700; font-size: 1rem; border-bottom: 2px solid var(--ink); padding-block: 10px; }
+.class-table tbody th { font-weight: 700; min-width: 220px; }
+.class-table td.num, .class-table th.num { text-align: right; }
+.class-table td.num { font-family: var(--font-typed); font-size: 1.25rem; }
+.class-table td.free strong { font-size: 1.5rem; }
+.class-table td:last-child, .class-table th:last-child { padding-right: 0; text-align: right; }
+
+.seat-meter { display: flex; height: 14px; margin-top: 10px; border: 1px solid var(--ink); background: #fff; max-width: 300px; }
+.seat-meter span { display: block; height: 100%; transition: width 400ms ease; }
+.m-confirmed, .swatch-confirmed { background: var(--ink); }
+/* Held seats are "pencilled in": hatched until the fee is paid. */
+.m-held, .swatch-held { background: repeating-linear-gradient(-45deg, var(--held) 0 2px, #fff 2px 5px); }
+.swatch-free { background: #fff; }
+
+/* ---- Admission slip ---- */
+.slip {
+  position: relative; background-color: var(--paper); border: 1px solid var(--paper-edge);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60' viewBox='0 0 120 60'%3E%3Cg fill='none' stroke='%23c5d9c8' stroke-width='0.8'%3E%3Cpath d='M0 30 C 20 0 40 0 60 30 S 100 60 120 30'/%3E%3Cpath d='M0 30 C 20 60 40 60 60 30 S 100 0 120 30'/%3E%3Cpath d='M0 20 C 20 -10 40 -10 60 20 S 100 50 120 20'/%3E%3Cpath d='M0 40 C 20 70 40 70 60 40 S 100 10 120 40'/%3E%3C/g%3E%3C/svg%3E");
+}
+.slip-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 16px; align-items: center; padding: 22px 26px 18px; border-bottom: 2px solid var(--ink); background: rgba(255, 255, 255, 0.65); }
+.slip-head .brand-crest { grid-row: span 2; width: 46px; height: 53px; }
+.slip-kind { font-size: 1rem; font-weight: 700; color: var(--ink-soft); }
+.slip-head h2 { font-size: 1.6rem; padding-right: 150px; }
+.slip-section { padding: 22px 26px; display: grid; gap: 18px; }
+.slip-timer { padding: 22px 26px; display: grid; gap: 10px; }
+.slip-timer .label { font-weight: 700; }
+.slip-timer .countdown { font-size: clamp(3rem, 2.2rem + 4vw, 4.75rem); line-height: 1; letter-spacing: -0.02em; }
+.drain { height: 10px; border: 1px solid var(--ink); background: #fff; }
+.drain span { display: block; height: 100%; background: var(--held); transition: width 1s linear; }
+.drain.urgent span { background: var(--error); }
+.countdown { font-family: var(--font-typed); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Tear-off edge between the slip and the parent's counterfoil. */
+.perforation { height: 0; border-top: 2px dashed var(--ink-soft); position: relative; margin: 0 26px; }
+.perforation::before, .perforation::after {
+  content: ''; position: absolute; top: -13px; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--page); border: 1px solid var(--paper-edge);
+}
+.perforation::before { left: -39px; clip-path: inset(0 0 0 50%); }
+.perforation::after { right: -39px; clip-path: inset(0 50% 0 0); }
+
+/* GOV.UK summary list with typed-in values. */
+.details { display: grid; grid-template-columns: max-content minmax(0, 1fr); margin: 0; }
+.details dt, .details dd { padding: 10px 0; border-bottom: 1px solid var(--rule); margin: 0; }
+.details dt { font-weight: 700; padding-right: 32px; }
+.details dd { font-family: var(--font-typed); font-size: 1.15rem; }
+
+/* Ink stamp: the label comes from data-label so screen readers don't hear the status twice. */
+.stamp {
+  position: absolute; top: 26px; right: 24px; transform: rotate(-9deg); pointer-events: none;
+  border: 4px double currentColor; padding: 7px 14px 5px; font: 800 1.35rem/1 var(--font-ui);
+  letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; filter: url(#ink-rough);
+  mix-blend-mode: multiply; white-space: nowrap;
+}
+.stamp { display: inline-block; }
+.stamp::after { content: attr(data-label); }
+.stamp[data-status='HELD'] { color: var(--stamp-held); }
+.stamp[data-status='CONFIRMED'] { color: var(--stamp-confirmed); }
+.stamp[data-status='EXPIRED'] { color: var(--stamp-expired); }
+.stamp[data-status='CANCELLED'] { color: var(--stamp-cancelled); }
+
+
+/* ---- Create class: form beside the register of existing classes ---- */
+.office { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: 40px 64px; align-items: start; }
+.register { border-top: 4px solid var(--link); padding-top: 16px; display: grid; gap: 12px; }
+.register h2 { font-size: 1.3rem; }
+.register ol { list-style: none; margin: 0; padding: 0; }
+.register li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 1.05rem; }
+.register .seats { font-family: var(--font-typed); font-weight: 700; }
+
+/* ---- My applications: counterfoil rows ---- */
+.hold-list { list-style: none; padding: 0; margin: 0; border-top: 2px solid var(--ink); }
+.hold-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; align-items: center; gap: 12px 24px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+.hold-row strong { font-size: 1.2rem; }
+.hold-row .countdown { font-size: 1.15rem; }
+
+.empty { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 24px; align-items: center; padding: 24px 0; border-top: 2px solid var(--ink); }
+.empty svg { width: 110px; height: auto; }
+
+@media (max-width: 720px) {
+  body { font-size: 1.05rem; }
+  .notice { grid-template-columns: 1fr; }
+  .notice-art { justify-self: start; max-width: 240px; order: -1; }
+  .class-table thead { display: none; }
+  .class-table tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+  .class-table th, .class-table td { border: none; padding: 0; text-align: left; }
+  .class-table td.num, .class-table td:last-child { text-align: left; }
+  .class-table tbody th { grid-column: 1 / -1; min-width: 0; font-size: 1.2rem; }
+  .class-table td[data-label]::before { content: attr(data-label); display: block; font: 700 0.95rem/1.3 var(--font-ui); color: var(--ink-soft); }
+  .class-table td:last-child { grid-column: 1 / -1; }
+  .class-table td:last-child .btn { width: 100%; }
+  .seat-meter { max-width: none; }
+  .hold-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .details { grid-template-columns: 1fr; }
+  .details dt { border-bottom: 0; padding-bottom: 0; }
+  .slip-head h2 { padding-right: 0; }
+  .stamp { position: static; justify-self: start; margin: 4px 0 0 18px; }
+  .slip-head, .slip-section, .slip-timer { padding-left: 18px; padding-right: 18px; }
+  .perforation { margin: 0 18px; }
+  .perforation::before { left: -31px; }
+  .perforation::after { right: -31px; }
+  .empty { grid-template-columns: 1fr; }
+  .office { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
