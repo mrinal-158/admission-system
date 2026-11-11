@@ -1,0 +1,87 @@
+name: school-admission
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: school_admission
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - pgdata:/var/lib/postgresql/data   # survives `docker compose down` (not `down -v`)
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    # Not published to the host on purpose: avoids clashing with a local PostgreSQL on 5432.
+
+  backend:
+    build: ./backend
+    environment:
+      ConnectionStrings__Default: Host=db;Port=5432;Database=school_admission;Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}
+      HOLD_DURATION_SECONDS: ${HOLD_DURATION_SECONDS:-600}
+    ports:
+      - "8081:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    environment:
+      API_BASE_URL: ${API_BASE_URL:-http://localhost:8081}
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # ---- Optional: a second API process on the same database (bonus requirement) ----
+  # docker compose --profile multi up --build   -> second API on http://localhost:8082
+  backend-2:
+    profiles: ["multi"]
+    build: ./backend
+    environment:
+      ConnectionStrings__Default: Host=db;Port=5432;Database=school_admission;Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}
+      HOLD_DURATION_SECONDS: ${HOLD_DURATION_SECONDS:-600}
+    ports:
+      - "8082:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # ---- Tests (nothing but Docker needed) ----
+  # docker compose --profile test run --rm backend-tests
+  backend-tests:
+    profiles: ["test"]
+    image: mcr.microsoft.com/dotnet/sdk:10.0
+    working_dir: /src
+    volumes:
+      - ./backend:/src
+      - nuget-cache:/root/.nuget/packages
+      - /src/src/SchoolAdmission.Api/bin
+      - /src/src/SchoolAdmission.Api/obj
+      - /src/tests/SchoolAdmission.Tests/bin
+      - /src/tests/SchoolAdmission.Tests/obj
+    environment:
+      TEST_DB_CONNECTION: Host=db;Port=5432;Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}
+    command: ["dotnet", "test", "--logger", "console;verbosity=normal"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # docker compose --profile test run --rm frontend-tests
+  frontend-tests:
+    profiles: ["test"]
+    image: node:24-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules   # container-local, so host (e.g. Windows/macOS) binaries never mix in
+    command: ["sh", "-c", "npm ci --no-audit --no-fund && npm run typecheck && npm test"]
+
+volumes:
+  pgdata:
+  nuget-cache:
