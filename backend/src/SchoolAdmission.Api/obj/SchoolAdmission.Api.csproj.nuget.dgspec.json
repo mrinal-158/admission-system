@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\587130\\Desktop\\school-admission-system\\backend\\src\\SchoolAdmission.Api\\SchoolAdmission.Api.csproj": {}
+    "D:\\admission-system\\backend\\src\\SchoolAdmission.Api\\SchoolAdmission.Api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\587130\\Desktop\\school-admission-system\\backend\\src\\SchoolAdmission.Api\\SchoolAdmission.Api.csproj": {
+    "D:\\admission-system\\backend\\src\\SchoolAdmission.Api\\SchoolAdmission.Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\587130\\Desktop\\school-admission-system\\backend\\src\\SchoolAdmission.Api\\SchoolAdmission.Api.csproj",
+        "projectUniqueName": "D:\\admission-system\\backend\\src\\SchoolAdmission.Api\\SchoolAdmission.Api.csproj",
         "projectName": "SchoolAdmission.Api",
-        "projectPath": "C:\\Users\\587130\\Desktop\\school-admission-system\\backend\\src\\SchoolAdmission.Api\\SchoolAdmission.Api.csproj",
+        "projectPath": "D:\\admission-system\\backend\\src\\SchoolAdmission.Api\\SchoolAdmission.Api.csproj",
         "packagesPath": "C:\\Users\\587130\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\587130\\Desktop\\school-admission-system\\backend\\src\\SchoolAdmission.Api\\obj\\",
+        "outputPath": "D:\\admission-system\\backend\\src\\SchoolAdmission.Api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -4,10 +4,12 @@ First-come-first-served school admission. A parent applies and the seat is **hel
 fee before the hold runs out **confirms** it. Unpaid holds expire on their own, and a seat is
 never given out twice, even with two API instances on one database.
 
-[![Demo video, 63 seconds](docs/demo-poster.png)](docs/demo.mp4)
+![Demo: apply, pay, expiry and the overbooking test](docs/demo.gif)
+
+63-second walkthrough. Full-quality video: [docs/demo.mp4](docs/demo.mp4).
 
 **Stack:** ASP.NET Core (.NET 10), EF Core, PostgreSQL 17, React 19 + TypeScript + Vite,
-Docker Compose, GitHub Actions.
+Docker Compose.
 
 ## Run
 
@@ -80,8 +82,7 @@ docker compose --profile test run --rm frontend-tests
 ```
 
 39 backend tests against real PostgreSQL (domain rules, API contract, concurrency including
-two API hosts on one database) and 18 frontend tests. CI runs both on every push, plus a Docker
-smoke test, and publishes images to GitHub Packages from `main`.
+two API hosts on one database) and 18 frontend tests.
 
 Two live API instances, 100 requests for 10 seats (expect `10 × 201`, `90 × 409`):
 

@@ -6,7 +6,7 @@ I used Claude Code (Anthropic, Claude Opus 5.5) in the terminal and desktop app.
 
 - Talking through the design before coding: row lock vs optimistic locking vs a seat counter,
   how expiry should work, the error format. I chose the stack and the approach.
-- Writing most of the code: backend, React frontend, tests, Dockerfiles, compose and CI.
+- Writing most of the code: backend, React frontend, tests, Dockerfiles and Docker Compose.
 - Drafting these docs.
 - Checking the running app with curl and a real browser, including stopping the API and
   restarting the stack.
@@ -39,4 +39,4 @@ confirmed the overbooking tests fail without it.
 
 I checked every requirement against the running app, not just the code. Work went in small
 commits on feature branches, so each change is a readable diff. Everything was built on
-10 November 2026 in one session, which is why the commit times are close together.
+11 November 2026 in one session, which is why the commit times are close together.
